@@ -5,11 +5,14 @@
 # Rick Umali (rickumali@gmail.com)
 #
 # V1.0 - 10/13/2007
-# Initial revision.
+#        Initial revision.
+# V2.0 - 10/18/2007
+#        Added support for dates.
 #
 #
 use strict;
 
+use Date::Calc qw(Parse_Date Day_of_Week Day_of_Week_to_Text);
 use Getopt::Long;
 use WWW::Mechanize;
 use HTML::TokeParser;
@@ -40,6 +43,7 @@ $agent->get("http://www.sportingnews.com/blog/rickumali");
 my $stream = HTML::TokeParser->new(\$agent->{content});
 my %subject = ();
 my %text = ();
+my %pubDate = ();
 
 while (my $div_tag = $stream->get_tag("div")) {
 
@@ -47,6 +51,7 @@ while (my $div_tag = $stream->get_tag("div")) {
 		my $id = $div_tag->[1]{id};
 
 		$subject{$id} = get_subject($stream);
+		$pubDate{$id} = get_pubdate($stream);
 		$text{$id} = get_entry($stream);
 	}
 }
@@ -83,6 +88,7 @@ foreach my $id (sort {$b cmp $a} keys %subject) {
     $display_id =~ s/entry_//;
     $rss->add_item(title => $subject{$id},
                    link  => "http://www.sportingnews.com/blog/rickumali/$display_id",
+                   pubDate  => $pubDate{$id},
                    permaLink  =>
 "http://www.sportingnews.com/blog/rickumali/$display_id",
                    description => substr($text{$id},0,160) . "..."
@@ -120,4 +126,42 @@ sub get_entry() {
 		}
 	}
 	return ($entry);
+}
+
+sub get_pubdate() {
+	my $stream = shift;
+	my $pub_date_raw = "No Entry";
+	my $pub_date = "No Entry";
+	while (my $div_tag = $stream->get_tag("div")) {
+
+		if ($div_tag->[1]{id} && $div_tag->[1]{id} eq "MBSubLine") {
+			$stream->get_tag("em");
+			$pub_date_raw = $stream->get_trimmed_text();
+			$pub_date = reformat_date($pub_date_raw);
+			return($pub_date);
+		}
+	}
+	return ($pub_date_raw);
+}
+
+sub reformat_date() {
+	my $pub_date_raw = shift;
+	# Read this format: # >Oct 06, 2007 07:47 PM
+	my ($raw_mon, $raw_day, $raw_year, $raw_time, $raw_merid) = split(' ', $pub_date_raw);
+	chop($raw_day);
+	my ($year, $month, $day) = Parse_Date($pub_date_raw);
+	my $dow = Day_of_Week($year, $month, $day);
+	my $today = Day_of_Week_to_Text($dow);
+	if ($raw_merid eq "PM") {
+		my ($hour,$min) = split(":", $raw_time);
+		$hour+=12;
+		if ($hour == 24) {
+			$hour = 12;
+		}
+		$raw_time=sprintf("%02s:%02s",$hour,$min);
+	}
+	
+	# Generate this format: Sat, 07 Sep 2002 9:42:31 GMT
+	return(sprintf("%.3s, %s %s %s %s:00 EDT", 
+		$today,$raw_day,$raw_mon,$year,$raw_time));
 }
