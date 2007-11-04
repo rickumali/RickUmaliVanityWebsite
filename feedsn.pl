@@ -8,6 +8,8 @@
 #        Initial revision.
 # V2.0 - 10/18/2007
 #        Added support for dates.
+# V3.0 - 11/04/2007
+#        Finally fixed truncation
 #
 #
 use strict;
@@ -86,12 +88,13 @@ $rss->image(title       => 'Rick on Sports',
 foreach my $id (sort {$b cmp $a} keys %subject) {
     my $display_id = $id;
     $display_id =~ s/entry_//;
+    my $truncated_text = truncate_text($text{$id},160);
     $rss->add_item(title => $subject{$id},
                    link  => "http://www.sportingnews.com/blog/rickumali/$display_id",
                    pubDate  => $pubDate{$id},
                    permaLink  =>
 "http://www.sportingnews.com/blog/rickumali/$display_id",
-                   description => substr($text{$id},0,160) . "..."
+                   description => $truncated_text,
                   );
 }
 
@@ -99,6 +102,23 @@ $rss->save($feedname);
 print "Generated $feedname with pubDate: $pubDate\n";
 
 exit 0;
+
+sub truncate_text() {
+	my $text = shift;
+	my $min_chars = shift; # Minimum number of characters for text
+
+	if (length($text) < $min_chars) {
+		return($text);
+	}
+
+	my $pos = 0;
+	while ($pos < $min_chars) {
+		$pos = index($text, " ", $pos+1);
+	}
+
+	return(substr($text,0,$pos) . " ...");
+
+}
 
 sub get_subject() {
 	my $stream = shift;
