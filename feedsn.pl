@@ -10,6 +10,9 @@
 #        Added support for dates.
 # V3.0 - 11/04/2007
 #        Finally fixed truncation
+# V4.0 - 11/07/2007
+#        Stopped writing to STDOUT
+#
 #
 #
 use strict;
@@ -23,7 +26,7 @@ use IO::File;
 use XML::RSS;
 use POSIX;
 
-my $version = 0.5;
+my $version = 4.0;
 my $opt_debug = 0;
 my $opt_version = 0;
 
@@ -99,7 +102,7 @@ foreach my $id (sort {$b cmp $a} keys %subject) {
 }
 
 $rss->save($feedname);
-print "Generated $feedname with pubDate: $pubDate\n";
+# print "Generated $feedname with pubDate: $pubDate\n";
 
 exit 0;
 
