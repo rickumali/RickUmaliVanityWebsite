@@ -12,6 +12,8 @@
 #        Finally fixed truncation
 # V4.0 - 11/07/2007
 #        Stopped writing to STDOUT
+# V5.0 - 10/18/2008
+#        Added bailout code to whileloop (search "bailout")
 #
 #
 #
@@ -117,6 +119,14 @@ sub truncate_text() {
 	my $pos = 0;
 	while ($pos < $min_chars) {
 		$pos = index($text, " ", $pos+1);
+		if ($pos == -1) {
+			# This bailout code was added following an
+			# outage I caused on rickumali.com. There are
+			# some instances of this while() loop going into
+			# an infinite loop. This bailout code catches
+			# that. (10-19-2008)
+			last;
+		}
 	}
 
 	return(substr($text,0,$pos) . " ...");
