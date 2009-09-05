@@ -1,0 +1,10 @@
+<!-- Generated: [% current_time_stamp %] -->
+
+<p>Yes, I <a href="http://dictionary.reference.com/search?q=blog">blog</a>. Do I ever. I've been writing <a href="http://rgu.freeshell.org/rickblog/">Rick's Ramblings</a> since 2001. Below are excerpts from my most recent BLOG entries. Click on the title to read more.</p>
+[% FOREACH entry = entries %]
+	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
+	<h3>[% entry.published_date %]</h3>
+	<p>[% entry.text %]</p>
+	<hr/>
+[% END %]
+<a href="http://feeds.feedburner.com/RicksRamblings"><img src="feed-icon-14x14.png"></a>

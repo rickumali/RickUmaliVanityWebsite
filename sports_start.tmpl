@@ -1,0 +1,9 @@
+<!-- Generated: [% current_time_stamp %] -->
+<p>I'm a sports nut. <a href="http://rgu.freeshell.org/oldblog/2003_10_19_archive.html#106662236163997427">I didn't used to be.</a> But now I am. My outlet is at <a href="http://www.sportingnews.com/">Sporting News</a>, where I bang away on a <a href="http://www.sportingnews.com/blog/rickumali">blog just dedicated to sports</a>.</p>
+[% FOREACH entry = entries %]
+	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
+	<h3>[% entry.published_date %]</h3>
+	<p>[% entry.text %]</p>
+	<hr/>
+[% END %]
+<a href="http://feeds.feedburner.com/RickOnSports"><img src="feed-icon-14x14.png"></a>

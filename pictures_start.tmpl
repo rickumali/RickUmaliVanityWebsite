@@ -1,0 +1,25 @@
+<!-- Generated: [% current_time_stamp %] -->
+<p>
+I have plenty of pictures at a bunch of places 
+<a href="http://www.theworld.com/~rgu/family/">[1]</a> 
+<a href="http://www.theworld.com/~rgu/elvis/">[2]</a> 
+<a href="http://members.tripod.com/rick_umali/paris/index.htm">[3]</a> 
+<a href="http://www.rickumali.com/mia/">[4]</a> 
+<a href="http://www.rickumali.com/snow2003/">[5]</a> 
+<a href="http://www.rickumali.com/miathree/">[6]</a> 
+<a href="http://www.rickumali.com/ag2004/">[7]</a> 
+<a href="http://www.rickumali.com/va2004/">[8]</a> 
+<a href="http://rgu.freeshell.org/miafour/">[9]</a> 
+<a href="http://www.tabblo.com/studio/stories/view/55337/">[10]</a> 
+<a href="http://www.rodrigoumali.com/carnival2007/">[11]</a>,
+but I primarily update <a href="http://www.flickr.com/photos/rickumali/">Flickr</a>. 
+Below are the last few photos that I have uploaded there. Click on the title to
+see more.
+</p>
+[% FOREACH entry = entries %]
+	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
+	<h3>[% entry.published_date %]</h3>
+	<p><img src="[% entry.img_url %]"></p>
+	<hr/>
+[% END %]
+<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=69224449@N00&lang=en-us&format=rss_200"><img src="feed-icon-14x14.png" alt="Click here to get the feed for Rick's Pictures"></a>
