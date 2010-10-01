@@ -60,6 +60,16 @@ foreach my $elem (keys %{$rss_feed}) {
 # variables.
 my @entry_array = ();
 $key_count = 0;
+
+if ($channel_hash->{item} == undef) {
+	# Added this code to detect degenerate feeds. The resulting 
+	# file will be 0, but at least now during the debugging, you'll
+	# know why! If you're in here, it's because the feed doesn't have
+	# any RSS "items" in it. It's EMPTY! Check the raw feed itself, 
+	# using the "-dump" switch.
+	print "No item array in the channel! Bad feed!";
+	exit 1;
+}
 my @item_array = @{$channel_hash->{item}};
 foreach my $item (@item_array) {
 	print "$key_count: $item\n" if $opt_debug;
