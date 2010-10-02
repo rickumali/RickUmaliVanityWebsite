@@ -77,7 +77,7 @@ foreach my $item (@item_array) {
 	my $published_date = get_published_date($item);
 	my $title = get_title($item);
 	my $link = get_url_link($item);
-	my $text = get_text($item);
+	my $text = get_truncated_text($item, 160);
 
 	# This builds an array of anonymous HASHes containing the data
 	# that will be shown in the template
@@ -153,4 +153,36 @@ sub get_text() {
 
 	print "\tText: " . $entry->{"description"} . "\n" if $opt_debug;
 	return($entry->{"description"});
+}
+
+sub get_truncated_text() {
+	my $entry = shift;
+	my $min_chars = shift;
+
+	my $text_stream = HTML::TokeParser->new(\$entry->{"description"});
+	my $text = $text_stream->get_phrase();
+
+	if (length($text) < $min_chars) {
+		print "\tTEXT: $text\n" if $opt_debug;
+		return($text);
+	} else {
+
+		my $pos = 0;
+		while ($pos < $min_chars) {
+			$pos = index($text, " ", $pos+1);
+			if ($pos == -1)	{
+				# Bail out if index() returns -1. This means
+				# that no spaces exist before $min_chars. This 
+				# bail out code was added because of a boundary 
+				# condition that caused this while() loop to 
+				# run infinitely the week of 10/13/2008. NetAtlantic
+				# shutdown rickumali.com because of this. See
+				# Notebook files 20081017 and 20081018
+				last;
+			}
+		}
+
+		print "\tTEXT: " . substr($text,0,$pos) . " ..." . "\n"  if $opt_debug;
+		return(substr($text,0,$pos) . "...");
+	}
 }
