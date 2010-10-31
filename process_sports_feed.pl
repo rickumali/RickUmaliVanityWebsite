@@ -15,6 +15,9 @@
 # 2007-12-05 - Modified code to handle pretty-printing of date
 #
 # 2007-12-07 - Modified code to use Template Toolkit
+#
+# 2010-10-30 - Modified code to handle Rowdy's first <p> in <description> tag.
+#
 use strict;
 
 use XML::Simple;
@@ -160,6 +163,23 @@ sub get_truncated_text() {
 	my $min_chars = shift;
 
 	my $text_stream = HTML::TokeParser->new(\$entry->{"description"});
+
+	# This next block consumes the first token in the <description> element. 
+	# If the token is a "T" (for Text), then it's "put back into the stream"
+	# for the get_phrase() call. If the token is anything else, the token stays
+	# "consumed". 
+	#
+	# This block was introduced after the migration of my sports BLOG to 
+	# Rowdy. The first HTML element in the <description> tag was a "<p>", 
+	# which was DIFFERENT from SportingNews. This very small change caused 
+	# BLANK preview text. The block below corrects that.
+	my $tok_ary = $text_stream->get_token();
+	print "\tTOKEN ARRAY: $tok_ary\n" if $opt_debug;
+	print "\tTOKEN ARRAY 0: @{$tok_ary}[0]\n" if $opt_debug;
+	if (@{$tok_ary}[0] eq "T") {
+		$text_stream->unget_token($tok_ary);
+	}
+
 	my $text = $text_stream->get_phrase();
 
 	if (length($text) < $min_chars) {
