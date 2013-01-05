@@ -44,15 +44,12 @@ my $rss_feed = XMLin($feed_xml_file);
 
 print STDERR Dumper($rss_feed) if $opt_dump;
 
-my $key_count = 0;
+my $item_count = 0;
 my $channel_hash;
 
 # Walk through each "element" of the RSS feed. When you see the "entry" element,
 # save it away in a hash ref
-$key_count = 0;
 foreach my $elem (keys %{$rss_feed}) {
-	$key_count++;
-
 	if ($elem eq "channel") {
 		$channel_hash = %{$rss_feed}->{$elem};
 	}
@@ -62,7 +59,6 @@ foreach my $elem (keys %{$rss_feed}) {
 # each "item", and build a structure that will hold the template's
 # variables.
 my @entry_array = ();
-$key_count = 0;
 
 if ($channel_hash->{item} == undef) {
 	# Added this code to detect degenerate feeds. The resulting 
@@ -75,7 +71,8 @@ if ($channel_hash->{item} == undef) {
 }
 my @item_array = @{$channel_hash->{item}};
 foreach my $item (@item_array) {
-	print "$key_count: $item\n" if $opt_debug;
+	last if $item_count >= 10;
+	print "$item_count: $item\n" if $opt_debug;
 
 	my $published_date = get_published_date($item);
 	my $title = get_title($item);
@@ -91,7 +88,7 @@ foreach my $item (@item_array) {
 		text => $text, 
 	};
 
-	$key_count++;
+	$item_count++;
 }
 
 my $vars = {
