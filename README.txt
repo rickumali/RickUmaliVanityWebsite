@@ -21,7 +21,7 @@ make_ramblings_tmpl.sh -> getfeed.pl -> processfeed.pl = blog.tmpl
 
 make_flickr_tmpl.sh -> getfeed.pl -> process_flickr_feed.pl = pictures.tmpl
 
-make_rick_index.sh -> 
+make_rick_index.sh -> make_new_index.pl ->
     bio.tmpl + blog.tmpl + sports.tmpl + pictures.tmpl +
     contact.tmpl + footer.tmpl + rick-yui.tmpl = test.html = index.html
 
