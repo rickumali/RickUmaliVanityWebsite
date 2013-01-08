@@ -8,6 +8,7 @@ min hr day month weekday    job
 0   10   *     *       *    ./make_sports_tmpl.sh
 10  10   *     *       *    ./make_ramblings_tmpl.sh
 20  10   *     *       *    ./make_flickr_tmpl.sh
+25  10   *     *       *    ./make_tech_tmpl.sh
 30  10   *     *       *    ./make_rick_index.sh
 
 --------------------------------------------------------------------------------
@@ -19,10 +20,12 @@ make_sports_tmpl.sh -> getfeed.pl -> process_sports_feed.pl = sports.tmpl
 
 make_ramblings_tmpl.sh -> getfeed.pl -> processfeed.pl = blog.tmpl
 
+make_tech_tmpl.sh -> getfeed.pl -> process_tech_feed.pl = tech.tmpl
+
 make_flickr_tmpl.sh -> getfeed.pl -> process_flickr_feed.pl = pictures.tmpl
 
 make_rick_index.sh -> make_new_index.pl ->
-    bio.tmpl + blog.tmpl + sports.tmpl + pictures.tmpl +
+    bio.tmpl + blog.tmpl + tech.tmpl + sports.tmpl + pictures.tmpl +
     contact.tmpl + footer.tmpl + rick-yui.tmpl = test.html = index.html
 
 --------------------------------------------------------------------------------
