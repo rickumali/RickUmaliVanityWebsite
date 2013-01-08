@@ -6,6 +6,7 @@
 <meta name="generator" content="Rick Umali">
 
 <link rel="alternate" type="application/atom+xml" title="Rick's Ramblings" href="http://feeds.feedburner.com/RicksRamblings" />
+<link rel="alternate" type="application/rss+xml" title="Rick's Tech Talk" href="http://tech.rickumali.com/rss.xml" />
 <link rel="alternate" type="application/rss+xml" title="Rick on Sports" href="http://feeds.feedburner.com/RickOnSports" />
 <link rel="alternate" type="application/rss+xml" title="Rick's Flickr Photos" href="http://api.flickr.com/services/feeds/photos_public.gne?id=69224449@N00&lang=en-us&format=rss_200" />
 
@@ -36,6 +37,9 @@
   margin-top: 15px;
 }
 #blog {
+  margin-top: 15px;
+}
+#tech {
   margin-top: 15px;
 }
 #sports {
@@ -71,6 +75,7 @@
         <ul class="yui-nav">
             <li><a href="#bio"><em>Bio</em></a></li>
             <li><a href="#blog"><em>Blog</em></a></li>
+            <li><a href="#tech"><em>Tech</em></a></li>
             <li><a href="#sports"><em>Sports</em></a></li>
             <li><a href="#pictures"><em>Pictures</em></a></li>
             <li class="selected"><a href="#contact"><em>Contact</em></a></li>
@@ -81,6 +86,9 @@
             </div>
             <div id="blog">
 [% INSERT blog.tmpl %]
+            </div>
+            <div id="tech">
+[% INSERT tech.tmpl %]
             </div>
             <div id="sports">
 [% INSERT sports.tmpl %]
@@ -116,7 +124,7 @@
 (function () {
 
     function TabStateToID(s) {
-	var tab_id = 4; 
+	var tab_id = 5; 
 	switch(s) {
 	  case 'bio':
 	  tab_id = 0;
@@ -124,17 +132,20 @@
 	  case 'blog':
 	  tab_id = 1;
 	  break;
-	  case 'sports':
+	  case 'tech':
 	  tab_id = 2;
 	  break;
-	  case 'pictures':
+	  case 'sports':
 	  tab_id = 3;
 	  break;
-	  case 'contact':
+	  case 'pictures':
 	  tab_id = 4;
 	  break;
+	  case 'contact':
+	  tab_id = 5;
+	  break;
 	  default:
-	  tab_id = 4;
+	  tab_id = 5;
 	  break;
 	}
 	return tab_id;

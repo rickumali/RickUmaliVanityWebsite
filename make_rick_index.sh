@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This SH script builds the full index. Requires blog.tmpl, sports.tmpl, and
 # pictures.tmpl
@@ -29,6 +29,7 @@ function check_file {
 
 check_file bio.tmpl || exit 1
 check_file blog.tmpl || exit 1
+check_file tech.tmpl || exit 1
 check_file sports.tmpl || exit 1
 check_file pictures.tmpl || exit 1
 check_file contact.tmpl || exit 1
