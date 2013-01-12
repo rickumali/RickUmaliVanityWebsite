@@ -161,14 +161,30 @@ sub get_truncated_text() {
 
 	my $tag;
 	my $text;
+	my $found_body = 0;
 
 	# The description element contains lots of HTML (specifically,
 	# lots of Drupal <divs>). This code reads in the first few HTML tags,
 	# storing their text into the $text variable.
-	for (my $i = 0; $i < 5; $i++) {
+	for (my $i = 0; $i < 20; $i++) {
 		$tag = $text_stream->get_tag();
-		print "\tTAG: $tag\n" if $opt_debug;
-		$text .= $text_stream->get_phrase();
+		if ($opt_debug) {
+			print "TAG FOUND: $tag->[3]\n";
+		}
+		# This could examines each tag, and checks whether the 
+		# Drupal DIV class 'field-name-body' is present. As soon
+		# as we find the first one, THEN we start collecting the
+		# text. We do this because until we see the 'field-name-body'
+		# most of the text are just the tags, and we don't want
+		# to display that text.
+		if (!$found_body) {
+			if ($tag->[3] =~ /.* field-name-body .*/) {
+				$found_body = 1;
+				print "FIELD-BODY FOUND\n" if $opt_debug;
+			}
+		} else {
+			$text .= $text_stream->get_phrase();
+		}
 	}
 
 	if (length($text) < $min_chars) {
