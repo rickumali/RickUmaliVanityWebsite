@@ -162,22 +162,24 @@ sub get_truncated_text() {
 	my $text_stream = HTML::TokeParser->new(\$entry->{"description"});
 
 	# This next block consumes the first token in the <description> element. 
-	# If the token is a "T" (for Text), then it's "put back into the stream"
-	# for the get_phrase() call. If the token is anything else, the token stays
-	# "consumed". 
-	#
 	# This block was introduced after the migration of my sports BLOG to 
-	# Rowdy. The first HTML element in the <description> tag was a "<p>", 
-	# which was DIFFERENT from SportingNews. This very small change caused 
-	# BLANK preview text. The block below corrects that.
-	my $tok_ary = $text_stream->get_token();
-	print "\tTOKEN ARRAY: $tok_ary\n" if $opt_debug;
-	print "\tTOKEN ARRAY 0: @{$tok_ary}[0]\n" if $opt_debug;
-	if (@{$tok_ary}[0] eq "T") {
-		$text_stream->unget_token($tok_ary);
+	# Sportsblog. After analyzing the output of Sportsblog, I see that 
+	# it stores the text in a DIV tag, with the CLASS attribute set to
+	# 'text'. This while loop examines every DIV element, and if the 
+	# DIV contains class='text', it will obtain all the TEXT in that 
+	# element
+	my $text = "";
+	while (my $tok_ary = $text_stream->get_tag("div")) {
+		print "\tTOKEN ARRAY: $tok_ary\n" if $opt_debug;
+		print "\tTOKEN ARRAY 0: @{$tok_ary}[0]\n" if $opt_debug;
+		print "\tTOKEN ARRAY 1: @{$tok_ary}[1]\n" if $opt_debug;
+		next if @{$tok_ary}[1]->{'class'} ne 'text';
+		print "\tTOKEN ARRAY 1 HASH: @{$tok_ary}[1]->{'class'}\n" if $opt_debug;
+		my $tmp_text = $text_stream->get_text("/div");
+		print "\tINTERMEDIATE TEXT: $tmp_text\n" if $opt_debug;
+		$text .= $tmp_text;
 	}
-
-	my $text = $text_stream->get_phrase();
+	print "\tTEXT AFTER LOOP $text\n" if $opt_debug;
 
 	if (length($text) < $min_chars) {
 		print "\tTEXT: $text\n" if $opt_debug;
