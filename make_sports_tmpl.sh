@@ -9,6 +9,9 @@
 # First, get the RickOnSports feed, via getfeed.pl
 /usr/bin/perl getfeed.pl http://feeds.feedburner.com/RickOnSports
 
+# Fixup the XML
+sed -i -e '1s/^ //' feed.xml
+
 if [ -s feed.xml ] ; then
 	# If the feed exists, then rename it to a good temp file
 	mv feed.xml feed-RickOnSports-$$.xml
