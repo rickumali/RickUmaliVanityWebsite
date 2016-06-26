@@ -164,20 +164,25 @@ sub get_truncated_text() {
 	# This next block consumes the first token in the <description> element. 
 	# This block was introduced after the migration of my sports BLOG to 
 	# Sportsblog. After analyzing the output of Sportsblog, I see that 
-	# it stores the text in a DIV tag, with the CLASS attribute set to
+	# it stores the text in a DIV tag, with the CLASS attribute containing
 	# 'text'. This while loop examines every DIV element, and if the 
-	# DIV contains class='text', it will obtain all the TEXT in that 
+	# DIV's class contains 'text', it will obtain all the TEXT in that 
 	# element
 	my $text = "";
 	while (my $tok_ary = $text_stream->get_tag("div")) {
 		print "\tTOKEN ARRAY: $tok_ary\n" if $opt_debug;
 		print "\tTOKEN ARRAY 0: @{$tok_ary}[0]\n" if $opt_debug;
 		print "\tTOKEN ARRAY 1: @{$tok_ary}[1]\n" if $opt_debug;
-		next if @{$tok_ary}[1]->{'class'} ne 'text';
-		print "\tTOKEN ARRAY 1 HASH: @{$tok_ary}[1]->{'class'}\n" if $opt_debug;
-		my $tmp_text = $text_stream->get_text("/div");
-		print "\tINTERMEDIATE TEXT: $tmp_text\n" if $opt_debug;
-		$text .= $tmp_text;
+		print "\tTOKEN ARRAY 1: Dumper " if $opt_debug;
+		print Dumper(@{$tok_ary}[1]) if $opt_debug;
+		# If the <div>'s class attribute contains 'text', then
+		# collect the text
+		if (@{$tok_ary}[1]->{'class'} =~ /text/) {
+		  print "\tTOKEN ARRAY 1 HASH: @{$tok_ary}[1]->{'class'}\n" if $opt_debug;
+		  my $tmp_text = $text_stream->get_text("/div");
+		  print "\tINTERMEDIATE TEXT: $tmp_text\n" if $opt_debug;
+		  $text .= $tmp_text;
+		}
 	}
 	print "\tTEXT AFTER LOOP $text\n" if $opt_debug;
 
