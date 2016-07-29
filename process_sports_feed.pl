@@ -109,7 +109,7 @@ sub get_published_date () {
 
 	# The feed contains a timestamp formatted like this:
 	#
-	# Mon, 19 Jan 15 09:21:55 -0500
+	# Wed, 22 Jun 2016 21:15:22 -0400
 
 	# Break apart the timestamp, and reformat it
 	my ($unused, $day, $month, $year, $time, $zone) = split(' ', $entry->{"pubDate"});
@@ -132,7 +132,6 @@ sub get_published_date () {
 	);
 
 	$day =~ s/^0//; # Strip out any leading zeros
-	$year += 2000;
 	return($month_full{$month} . " $day, $year");
 }
 
