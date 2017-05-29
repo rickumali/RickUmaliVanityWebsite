@@ -45,23 +45,29 @@ if ($opt_debug) {
 }
 
 my $agent = WWW::Mechanize->new();
-$agent->get("http://www.sportingnews.com/blog/rickumali");
+$agent->get("http://www.sportsblog.com/rickumali");
 
 my $stream = HTML::TokeParser->new(\$agent->{content});
 my %subject = ();
 my %text = ();
 my %pubDate = ();
 
-while (my $div_tag = $stream->get_tag("div")) {
+while (my $article_tag = $stream->get_tag("article")) {
+	print "Found <article>\n";
+	# Get the first <p>. The article is in here
 
-	if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "MBEntry") {
-		my $id = $div_tag->[1]{id};
-
-		$subject{$id} = get_subject($stream);
-		$pubDate{$id} = get_pubdate($stream);
-		$text{$id} = get_entry($stream);
+	while (my $div_tag = $stream->get_tag("div")) {
+		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
+			my $id = $div_tag->[1]{id};
+			print "Found <div article-entry-content>\n";
+			# Get the link from first following <h3><a>
+			# Walk link to get its contents
+			# Get the date from first following div
+		}
 	}
 }
+
+exit 1;
 
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
 	gmtime(time);
