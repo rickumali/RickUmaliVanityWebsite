@@ -51,15 +51,17 @@ my $stream = HTML::TokeParser->new(\$agent->{content});
 my %subject = ();
 my %text = ();
 my %pubDate = ();
+my $id_counter = 0;
 
 while (my $article_tag = $stream->get_tag("article")) {
-	print "Found <article>\n";
+	$id_counter += 1;
+	print "Found <article> " . $id_counter . "\n";
 	# Get the first <p>. The article is in here
 
 	while (my $div_tag = $stream->get_tag("div")) {
 		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
-			my $id = $div_tag->[1]{id};
-			print "Found <div article-entry-content>\n";
+			$id_counter += 1;
+			print "Found <div article-entry-content> " . $id_counter . "\n";
 			# Get the link from first following <h3><a>
 			# Walk link to get its contents
 			# Get the date from first following div
