@@ -40,10 +40,6 @@ if ($opt_version) {
 	exit 1;
 }
 
-if ($opt_debug) {
-	exit 1;
-}
-
 my $agent = WWW::Mechanize->new();
 $agent->get("http://www.sportsblog.com/rickumali");
 
@@ -55,13 +51,13 @@ my $id_counter = 0;
 
 while (my $article_tag = $stream->get_tag("article")) {
 	$id_counter += 1;
-	print "Found <article> " . $id_counter . "\n";
+	print "Found <article> " . $id_counter . "\n" if $opt_debug;
 	# Get the first <p>. The article is in here
 
 	while (my $div_tag = $stream->get_tag("div")) {
 		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
 			$id_counter += 1;
-			print "Found <div article-entry-content> " . $id_counter . "\n";
+			print "Found <div article-entry-content> " . $id_counter . "\n" if $opt_debug;
 			# Get the link from first following <h3><a>
 			# Walk link to get its contents
 			# Get the date from first following div
