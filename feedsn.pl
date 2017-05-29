@@ -52,6 +52,8 @@ my $id_counter = 0;
 while (my $article_tag = $stream->get_tag("article")) {
 	$id_counter += 1;
 	print "Found <article> " . $id_counter . "\n" if $opt_debug;
+	$subject{$id_counter} = get_subject($stream);
+	print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
 	# Get the first <p>. The article is in here
 
 	while (my $div_tag = $stream->get_tag("div")) {
@@ -140,14 +142,9 @@ sub truncate_text() {
 sub get_subject() {
 	my $stream = shift;
 	my $subject = "No Subject";
-	while (my $div_tag = $stream->get_tag("div")) {
-
-		if ($div_tag->[1]{id} && $div_tag->[1]{id} eq "MBSubject") {
-			$stream->get_tag("a");
-			$stream->get_token();
-			$subject = $stream->get_trimmed_text();
-			return($subject);
-		}
+	while (my $h1_tag = $stream->get_tag("h1")) {
+		$subject = $stream->get_trimmed_text();
+		return($subject);
 	}
 	return ($subject);
 }
