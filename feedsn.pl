@@ -173,7 +173,7 @@ sub get_pubdate() {
 		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "articles-author-name") {
 			$stream->get_tag("p");
 			$pub_date_raw = $stream->get_phrase();
-			$pub_date = $pub_date_raw;
+			$pub_date = reformat_date($pub_date_raw);
 			return($pub_date);
 		}
 	}
@@ -181,11 +181,18 @@ sub get_pubdate() {
 }
 
 sub reformat_date() {
+	# Read this raw date: By rickumali May. 13, 2017
 	my $pub_date_raw = shift;
-	# Read this format: # >Oct 06, 2007 07:47 PM
-	my ($raw_mon, $raw_day, $raw_year, $raw_time, $raw_merid) = split(' ', $pub_date_raw);
-	chop($raw_day);
-	my ($year, $month, $day) = Parse_Date($pub_date_raw);
+
+	# Remove the byline
+	$pub_date_raw = substr $pub_date_raw, length("By rickumali") + 1;
+	my ($raw_mon, $raw_day, $raw_year) = split(' ', $pub_date_raw);
+	chop($raw_mon); # Remove trailing period
+	chop($raw_day); # Remove trailing comma
+	my $raw_time = "7:00"; # Hardcoded
+	my $raw_merid = "PM"; # Hardcoded
+	my $new_raw = $raw_mon . " " . $raw_day . " " . $raw_year;
+	my ($year, $month, $day) = Parse_Date($new_raw);
 	my $dow = Day_of_Week($year, $month, $day);
 	my $today = Day_of_Week_to_Text($dow);
 	if ($raw_merid eq "PM") {
