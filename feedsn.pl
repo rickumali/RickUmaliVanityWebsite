@@ -54,6 +54,8 @@ while (my $article_tag = $stream->get_tag("article")) {
 	print "Found <article> " . $id_counter . "\n" if $opt_debug;
 	$subject{$id_counter} = get_subject($stream);
 	print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
+	$pubDate{$id_counter} = get_pubdate($stream);
+	print "  Found date " . $pubDate{$id_counter} . "\n" if $opt_debug;
 	# Get the first <p>. The article is in here
 
 	while (my $div_tag = $stream->get_tag("div")) {
@@ -168,10 +170,10 @@ sub get_pubdate() {
 	my $pub_date = "No Entry";
 	while (my $div_tag = $stream->get_tag("div")) {
 
-		if ($div_tag->[1]{id} && $div_tag->[1]{id} eq "MBSubLine") {
-			$stream->get_tag("em");
-			$pub_date_raw = $stream->get_trimmed_text();
-			$pub_date = reformat_date($pub_date_raw);
+		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "articles-author-name") {
+			$stream->get_tag("p");
+			$pub_date_raw = $stream->get_phrase();
+			$pub_date = $pub_date_raw;
 			return($pub_date);
 		}
 	}
