@@ -56,7 +56,8 @@ while (my $article_tag = $stream->get_tag("article")) {
 	print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
 	$pubDate{$id_counter} = get_pubdate($stream);
 	print "  Found date " . $pubDate{$id_counter} . "\n" if $opt_debug;
-	# Get the first <p>. The article is in here
+	$text{$id_counter} = get_entry($stream);
+	print "  Found text " . $text{$id_counter} . "\n" if $opt_debug;
 
 	while (my $div_tag = $stream->get_tag("div")) {
 		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
@@ -153,12 +154,14 @@ sub get_subject() {
 
 sub get_entry() {
 	my $stream = shift;
-	my $entry = "No Entry";
-	while (my $div_tag = $stream->get_tag("div")) {
-
-		if ($div_tag->[1]{id} && $div_tag->[1]{id} eq "MBBody") {
-			$entry = $stream->get_phrase();
-			return($entry);
+	my $entry = "";
+	my $keep_going = 1;
+	while ($keep_going) {
+		my $t = $stream->get_tag("p", "div");
+		if ($t->[0] eq "div" and $t->[1]{class} eq "article-tags") {
+			$keep_going = 0;
+		} else {
+			$entry .= $stream->get_phrase();
 		}
 	}
 	return ($entry);
