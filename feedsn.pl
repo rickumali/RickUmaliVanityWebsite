@@ -63,9 +63,9 @@ while (my $article_tag = $stream->get_tag("article")) {
 		if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
 			$id_counter += 1;
 			print "Found <div article-entry-content> " . $id_counter . "\n" if $opt_debug;
-			# Get the link from first following <h3><a>
-			# Walk link to get its contents
-			# Get the date from first following div
+			my $anchor_tag = $stream->get_tag("a");
+
+			print "  Found link: " . $anchor_tag->[1]{href} . "\n" if $opt_debug;
 		}
 	}
 }
