@@ -44,6 +44,7 @@ my $agent = WWW::Mechanize->new();
 $agent->get("http://www.sportsblog.com/rickumali");
 
 my $stream = HTML::TokeParser->new(\$agent->{content});
+my %link = ();
 my %subject = ();
 my %text = ();
 my %pubDate = ();
@@ -51,6 +52,7 @@ my $id_counter = 0;
 
 while (my $article_tag = $stream->get_tag("article")) {
 	$id_counter += 1;
+	$link{$id_counter} = "http://www.sportsblog.com/rickumali";
 	print "Found <article> " . $id_counter . "\n" if $opt_debug;
 	$subject{$id_counter} = get_subject($stream);
 	print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
@@ -66,6 +68,7 @@ while (my $article_tag = $stream->get_tag("article")) {
 			my $anchor_tag = $stream->get_tag("a");
 
 			print "  Found link: " . $anchor_tag->[1]{href} . "\n" if $opt_debug;
+			$link{$id_counter} = $anchor_tag->[1]{href};
 		}
 	}
 }
