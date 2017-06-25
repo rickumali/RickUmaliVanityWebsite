@@ -87,8 +87,6 @@ for (my $i = 2; $i <= $article_count; $i++) {
   }
 }
 
-exit 1;
-
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
   gmtime(time);
 
@@ -96,8 +94,8 @@ my $feedname="rickonsports.rss";
 my $pubDate = POSIX::strftime( "%a, %d %b %Y %H:%M:00 GMT", $sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst);
 
 my $rss = new XML::RSS (version => '2.0');
-$rss->channel(title          => 'Rick on Sports',
-              link           => 'http://www.sportingnews.com/blog/rickumali',
+$rss->channel(title          => 'Rick Umali: Sports On My Mind',
+              link           => 'https://www.sportsblog.com/rickumali/',
               language       => 'en',
               description    => 'Rick Umali\'s Take on Sports',
               copyright      => 'Copyright 2007, rickumali.com',
@@ -108,9 +106,9 @@ $rss->channel(title          => 'Rick on Sports',
               webMaster      => 'rickumali@gmail.com'
              );
 
-$rss->image(title       => 'Rick on Sports',
+$rss->image(title       => 'Rick Umali: Sports On My Mind',
             url         => 'http://www.rodrigoumali.com/rick05.jpg',
-            link           => 'http://www.sportingnews.com/blog/rickumali',
+            link        => 'https://www.sportsblog.com/rickumali/',
             width       => 144,
             height      => 130,
             description => 'Rick Umali'
@@ -123,8 +121,7 @@ foreach my $id (sort {$b cmp $a} keys %subject) {
     $rss->add_item(title => $subject{$id},
                    link  => "http://www.sportingnews.com/blog/rickumali/$display_id",
                    pubDate  => $pubDate{$id},
-                   permaLink  =>
-"http://www.sportingnews.com/blog/rickumali/$display_id",
+                   permaLink  => $link{$id},
                    description => $truncated_text,
                   );
 }
