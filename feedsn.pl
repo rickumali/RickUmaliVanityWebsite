@@ -76,7 +76,7 @@ while (my $article_tag = $stream->get_tag("article")) {
 my $article_count = $id_counter;
 for (my $i = 2; $i <= $article_count; $i++) {
   print "Walking: " . $link{$i} . "\n" if $opt_debug;
-  $agent->get($link{$id_counter});
+  $agent->get($link{$i});
   my $stream = HTML::TokeParser->new(\$agent->{content});
 }
 
