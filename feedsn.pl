@@ -82,6 +82,8 @@ for (my $i = 2; $i <= $article_count; $i++) {
   while (my $article_tag = $stream->get_tag("article")) {
     print "Found <article>\n" if $opt_debug;
     $text{$i} = get_entry($stream);
+    $pubDate{$i} = substr $text{$i}, 0, $pattern_length;
+    $pubDate{$i} = reformat_date($pubDate{$i});
     $text{$i} = substr $text{$i}, $pattern_length;
     print "Found text " . $text{$i} . "\n" if $opt_debug;
   }
