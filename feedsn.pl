@@ -91,7 +91,7 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) =
   gmtime(time);
 
 my $feedname="rickonsports.rss";
-my $pubDate = POSIX::strftime( "%a, %d %b %Y %H:%M:00 GMT", $sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst);
+my $rssDate = POSIX::strftime( "%a, %d %b %Y %H:%M:00 GMT", $sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst);
 
 my $rss = new XML::RSS (version => '2.0');
 $rss->channel(title          => 'Rick Umali: Sports On My Mind',
@@ -99,8 +99,8 @@ $rss->channel(title          => 'Rick Umali: Sports On My Mind',
               language       => 'en',
               description    => 'Rick Umali\'s Take on Sports',
               copyright      => 'Copyright 2007, rickumali.com',
-              pubDate        => $pubDate,
-              lastBuildDate  => $pubDate,
+              pubDate        => $rssDate,
+              lastBuildDate  => $rssDate,
               docs           => 'http://feedvalidator.org/docs/rss2.html',
               managingEditor => 'rickumali@gmail.com',
               webMaster      => 'rickumali@gmail.com'
