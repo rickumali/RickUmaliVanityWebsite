@@ -114,12 +114,10 @@ $rss->image(title       => 'Rick Umali: Sports On My Mind',
             description => 'Rick Umali'
            );
 
-foreach my $id (sort {$b cmp $a} keys %subject) {
-    my $display_id = $id;
-    $display_id =~ s/entry_//;
+for (my $id = 1; $id <= $article_count; $id++) {
     my $truncated_text = truncate_text($text{$id},160);
     $rss->add_item(title => $subject{$id},
-                   link  => "http://www.sportingnews.com/blog/rickumali/$display_id",
+                   link  => $link{$id},
                    pubDate  => $pubDate{$id},
                    permaLink  => $link{$id},
                    description => $truncated_text,
