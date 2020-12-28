@@ -55,7 +55,7 @@ foreach my $elem (keys %{$rss_feed}) {
 	$key_count++;
 
 	if ($elem eq "entry") {
-		$entry_hash = %{$rss_feed}->{$elem};
+		$entry_hash = $rss_feed->{$elem};
 	}
 }
 
@@ -64,7 +64,7 @@ foreach my $elem (keys %{$rss_feed}) {
 my @entry_array = ();
 $key_count = 0;
 foreach my $elem (sort bypubdate keys %{$entry_hash}) {
-	my $entry = %{$entry_hash}->{$elem};
+	my $entry = $entry_hash->{$elem};
 
 	my $published_date = get_published_date($entry);
 	my $title = get_title($entry);
@@ -100,7 +100,7 @@ $tt->process('blog_start.tmpl', $vars)
 #
 # Used by the sort function, to reverse order the blog entries
 sub bypubdate () {
-	%{$entry_hash}->{$b}->{published} cmp %{$entry_hash}->{$a}->{published};
+	$entry_hash->{$b}->{published} cmp $entry_hash->{$a}->{published};
 }
 
 sub get_published_date () {

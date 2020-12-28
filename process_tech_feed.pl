@@ -43,7 +43,7 @@ my $channel_hash;
 # save it away in a hash ref
 foreach my $elem (keys %{$rss_feed}) {
 	if ($elem eq "channel") {
-		$channel_hash = %{$rss_feed}->{$elem};
+		$channel_hash = $rss_feed->{$elem};
 	}
 }
 

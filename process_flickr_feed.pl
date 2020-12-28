@@ -49,7 +49,7 @@ foreach my $elem (keys %{$rss_feed}) {
 	$key_count++;
 
 	if ($elem eq "channel") {
-		$channel_hash = %{$rss_feed}->{$elem};
+		$channel_hash = $rss_feed->{$elem};
 	}
 }
 
