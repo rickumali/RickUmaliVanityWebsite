@@ -177,6 +177,11 @@ sub get_truncated_text() {
 
 	my $text_stream = HTML::TokeParser->new(\$entry->{content}->{content});
 	my $text = $text_stream->get_phrase();
+	while (length($text) == 0) {
+		my $ary_ref = $text_stream->get_token();
+		print "\tARY_REF $ary_ref\n" if $opt_debug;
+		$text = $text_stream->get_phrase();
+	}
 
 	if (length($text) < $min_chars) {
 		print "\tTEXT: $text\n" if $opt_debug;
