@@ -6,8 +6,8 @@
 #
 # Rick Umali / 2007-12-02
 
-# First, get the RickOnSports feed, via getfeed.pl
-/usr/bin/perl getfeed.pl http://api.flickr.com/services/feeds/photos_public.gne\?id=69224449@N00\&lang=en-us\&format=rss_200
+# First, get the RickOnSports feed, via wget
+wget -O feed.xml http://www.flickr.com/services/feeds/photos_public.gne\?id=69224449@N00\&lang=en-us\&format=rss_200
 
 if [ -s feed.xml ] ; then
 	# If the feed exists, then rename it to a good temp file
