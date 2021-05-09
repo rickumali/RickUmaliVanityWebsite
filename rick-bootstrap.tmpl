@@ -29,13 +29,11 @@
 
 <body>
   <div class="container">
-    <div class="jumbotron">
-      <div class="text-center">
-        <div class="display-4">Rick Umali</div>
-          <img src="ricku-640x597.jpg" class="rounded img-fluid" alt="Rick Umali">
-      </div>
+    <div class="text-center">
+      <div class="display-4">Rick Umali</div>
+        <img src="rickumali-vanity.jpg" class="rounded img-fluid" alt="Rick Umali">
     </div>
-    <nav class="nav nav-pills flex-column flex-sm-row justify-content-center" id="myTab" role="tablist">
+    <nav class="my-1 nav nav-pills flex-column flex-sm-row justify-content-center" id="myTab" role="tablist">
         <button class="nav-link active" id="bio-tab" data-bs-toggle="tab" data-bs-target="#bio" type="button" role="tab" aria-controls="bio" aria-selected="true">Bio</button>
         <button class="nav-link" id="blog-tab" data-bs-toggle="tab" data-bs-target="#blog" type="button" role="tab" aria-controls="blog" aria-selected="false">Blog</button>
         <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech" type="button" role="tab" aria-controls="tech" aria-selected="false">Tech</button>
@@ -43,6 +41,7 @@
         <button class="nav-link" id="pictures-tab" data-bs-toggle="tab" data-bs-target="#pictures" type="button" role="tab" aria-controls="pictures" aria-selected="false">Pictures</button>
         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
     </nav>
+    <hr/>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="bio" role="tabpanel" aria-labelledby="bio-tab">
 [% INSERT bio.tmpl %]
