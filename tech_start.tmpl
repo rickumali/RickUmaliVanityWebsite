@@ -8,8 +8,8 @@ I'm the author of <a href="https://www.manning.com/books/learn-git-in-a-month-of
 Month of Lunches</a> (Manning Publications).
 </p>
 [% FOREACH entry = entries %]
-	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
-	<h3>[% entry.published_date %]</h3>
+	<h4><a href="[% entry.url %]">[% entry.title %]</a></h4>
+	<p>[% entry.published_date %]</p>
 	<p>[% entry.text %]</p>
 	<hr/>
 [% END %]

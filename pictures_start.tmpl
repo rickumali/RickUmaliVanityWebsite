@@ -16,8 +16,8 @@ I have plenty of pictures at a bunch of places
 but I primarily update <a href="http://www.flickr.com/photos/rickumali/">Flickr</a> and, more recently, <a href="http://instagram.com/rick_umali/">Instagram</a>.
 </p>
 [% FOREACH entry = entries %]
-	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
-	<h3>[% entry.published_date %]</h3>
+	<h4><a href="[% entry.url %]">[% entry.title %]</a></h4>
+	<p>[% entry.published_date %]</p>
 	<p><img src="[% entry.img_url %]"></p>
 	<hr/>
 [% END %]

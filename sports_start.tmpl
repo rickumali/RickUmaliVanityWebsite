@@ -1,8 +1,8 @@
 <!-- Generated: [% current_time_stamp %] -->
-<p>I'm a sports nut. <a href="http://blog.rickumali.com/2003/10/i-feel-as-if-im-now-fully-recovered.html">I didn't used to be.</a> But now I am. The links below will take you to posts from my <a href="http://rickumali.sportsblog.com/">sports blog</a>.</p>
+<p><a href="http://blog.rickumali.com/2003/10/i-feel-as-if-im-now-fully-recovered.html">For a long time I didn't follow sports.</a> But now I do. The links below will take you to posts from my <a href="https://www.sportsblog.com/rickumali/">sports blog</a>.</p>
 [% FOREACH entry = entries %]
-	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
-	<h3>[% entry.published_date %]</h3>
+	<h4><a href="[% entry.url %]">[% entry.title %]</a></h4>
+	<p>[% entry.published_date %]</p>
 	<p>[% entry.text %]</p>
 	<hr/>
 [% END %]
