@@ -3,7 +3,7 @@
 # make_new_index.pl
 #
 # Uses the Template Toolkit (TT2) to make a new rickumali.com home page
-# from the template rick-yui.tmpl (YUI = Yahoo User Interface toolkit).
+# from the template rick-bootstrap.tmpl
 #
 # To use this, say: perl make_new_index.pl > new_index.html
 #
@@ -22,6 +22,6 @@ my $vars = {
     name     => 'Rick Umali',
 };
 
-$tt->process('rick-yui.tmpl', $vars)
+$tt->process('rick-bootstrap.tmpl', $vars)
     || die $tt->error(), "\n";
 

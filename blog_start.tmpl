@@ -2,9 +2,8 @@
 
 <p>Yes, I write a <a href="http://en.wikipedia.org/wiki/Blog">blog</a>. I've been writing <a href="http://blog.rickumali.com/">Rick's Ramblings</a> since 2001.</p>
 [% FOREACH entry = entries %]
-	<h2><a href="[% entry.url %]">[% entry.title %]</a></h2>
-	<h3>[% entry.published_date %]</h3>
+	<h4><a href="[% entry.url %]">[% entry.title %]</a></h4>
+	<p>[% entry.published_date %]</p>
 	<p>[% entry.text %]</p>
-	<hr/>
 [% END %]
 <a href="http://feeds.feedburner.com/RicksRamblings"><img src="feed-icon-14x14.png"></a>

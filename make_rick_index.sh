@@ -3,7 +3,7 @@
 # This SH script builds the full index. Requires blog.tmpl, sports.tmpl, and
 # pictures.tmpl
 #
-# Also requires footer.tmpl, contact.tmpl, bio.tmpl and (of course) rick-yui.tmpl
+# Also requires footer.tmpl, contact.tmpl, bio.tmpl and (of course) rick-bootstrap.tmpl
 #
 # 2007-12-02 - Original
 # 2007-12-08 - Added functions to send e-mail
@@ -34,7 +34,7 @@ check_file sports.tmpl || exit 1
 check_file pictures.tmpl || exit 1
 check_file contact.tmpl || exit 1
 check_file footer.tmpl || exit 1
-check_file rick-yui.tmpl || exit 1
+check_file rick-bootstrap.tmpl || exit 1
 
 perl make_new_index.pl > test.html
 

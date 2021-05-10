@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-89930792-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <title>Rick Umali's Home Page</title>
+  <meta name="description" content="Yet Another Personal Web Page">
+  <meta name="keywords" content="Rick Umali, Rodrigo Umali">
+  <meta name="generator" content="Rick Umali">
+
+  <link rel="alternate" type="application/atom+xml" title="Rick's Ramblings" href="http://feeds.feedburner.com/RicksRamblings" />
+  <link rel="alternate" type="application/rss+xml" title="Rick's Tech Talk" href="http://tech.rickumali.com/rss.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Rick on Sports" href="http://feeds.feedburner.com/RickOnSports" />
+  <link rel="alternate" type="application/rss+xml" title="Rick's Flickr Photos" href="http://api.flickr.com/services/feeds/photos_public.gne?id=69224449@N00&lang=en-us&format=rss_200" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="text-center">
+      <div class="display-4">Rick Umali</div>
+        <img src="rickumali-vanity.jpg" class="rounded img-fluid" alt="Rick Umali">
+    </div>
+    <nav class="my-1 nav nav-pills flex-column flex-sm-row justify-content-center" id="myTab" role="tablist">
+        <button class="nav-link active" id="bio-tab" data-bs-toggle="tab" data-bs-target="#bio" type="button" role="tab" aria-controls="bio" aria-selected="true">Bio</button>
+        <button class="nav-link" id="blog-tab" data-bs-toggle="tab" data-bs-target="#blog" type="button" role="tab" aria-controls="blog" aria-selected="false">Blog</button>
+        <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech" type="button" role="tab" aria-controls="tech" aria-selected="false">Tech</button>
+        <button class="nav-link" id="sports-tab" data-bs-toggle="tab" data-bs-target="#sports" type="button" role="tab" aria-controls="sports" aria-selected="false">Sports</button>
+        <button class="nav-link" id="pictures-tab" data-bs-toggle="tab" data-bs-target="#pictures" type="button" role="tab" aria-controls="pictures" aria-selected="false">Pictures</button>
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+    </nav>
+    <hr/>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="bio" role="tabpanel" aria-labelledby="bio-tab">
+[% INSERT bio.tmpl %]
+      </div>
+      <div class="tab-pane fade" id="blog" role="tabpanel" aria-labelledby="blog-tab">
+[% INSERT blog.tmpl %]
+      </div>
+      <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
+[% INSERT tech.tmpl %]
+      </div>
+      <div class="tab-pane fade" id="sports" role="tabpanel" aria-labelledby="sports-tab">
+[% INSERT sports.tmpl %]
+      </div>
+      <div class="tab-pane fade" id="pictures" role="tabpanel" aria-labelledby="pictures-tab">
+[% INSERT pictures.tmpl %]
+      </div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+[% INSERT contact.tmpl %]
+      </div>
+    </div>
+  <hr class="my-4">
+  <footer>
+[% INSERT footer.tmpl %]
+  </footer>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+</body>
+</html>
