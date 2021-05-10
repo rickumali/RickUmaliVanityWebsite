@@ -14,7 +14,8 @@
 #        Stopped writing to STDOUT
 # V5.0 - 10/18/2008
 #        Added bailout code to whileloop (search "bailout")
-#
+# V6.0 - 05/09/2021
+#        Revamped retrieval of SportsBlog articles
 #
 #
 use strict;
@@ -27,8 +28,9 @@ use XML::Writer;
 use IO::File;
 use XML::RSS;
 use POSIX;
+use JSON::XS;
 
-my $version = 4.0;
+my $version = 6.0;
 my $opt_debug = 0;
 my $opt_version = 0;
 
@@ -50,44 +52,24 @@ my %text = ();
 my %pubDate = ();
 my $id_counter = 0;
 
-while (my $article_tag = $stream->get_tag("article")) {
+while (my $article_tag = $stream->get_tag("h3")) {
   $id_counter += 1;
-  $link{$id_counter} = "http://www.sportsblog.com/rickumali";
   print "Found <article> " . $id_counter . "\n" if $opt_debug;
-  $subject{$id_counter} = get_subject($stream);
+  ($subject{$id_counter}, $link{$id_counter}) = get_subject_and_link($stream);
   print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
-  $pubDate{$id_counter} = get_pubdate($stream);
-  print "  Found date " . $pubDate{$id_counter} . "\n" if $opt_debug;
-  $text{$id_counter} = get_entry($stream);
-  print "  Found text " . $text{$id_counter} . "\n" if $opt_debug;
-
-  while (my $div_tag = $stream->get_tag("div")) {
-    if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "article-entry-content") {
-      $id_counter += 1;
-      print "Found <div article-entry-content> " . $id_counter . "\n" if $opt_debug;
-      my $anchor_tag = $stream->get_tag("a");
-
-      print "  Found link: " . $anchor_tag->[1]{href} . "\n" if $opt_debug;
-      $link{$id_counter} = $anchor_tag->[1]{href};
-    }
-  }
+  print "  Found link " . $link{$id_counter} . "\n" if $opt_debug;
 }
 
 my $article_count = $id_counter;
-my $pattern_length = length("By rickumali MMM. DD, YYYY");
-for (my $i = 2; $i <= $article_count; $i++) {
+for (my $i = 1; $i <= $article_count; $i++) {
   print "Walking: " . $link{$i} . "\n" if $opt_debug;
   $agent->get($link{$i});
   my $stream = HTML::TokeParser->new(\$agent->{content});
+  $stream->empty_element_tags(1);
   while (my $article_tag = $stream->get_tag("article")) {
-    print "Found <article>\n" if $opt_debug;
-    $subject{$i} = get_subject($stream);
-    print "  Found subject: " . $subject{$id_counter} . "\n" if $opt_debug;
+    $pubDate{$i} = get_pubdate($stream);
+    print "  pubDate: " . $pubDate{$i} . "\n" if $opt_debug;
     $text{$i} = get_entry($stream);
-    $pubDate{$i} = substr $text{$i}, 0, $pattern_length;
-    $pubDate{$i} = reformat_date($pubDate{$i});
-    $text{$i} = substr $text{$i}, $pattern_length;
-    print "Found text " . $text{$i} . "\n" if $opt_debug;
   }
 }
 
@@ -153,19 +135,19 @@ sub truncate_text() {
       last;
     }
   }
-
   return(substr($text,0,$pos) . " ...");
-
 }
 
-sub get_subject() {
+sub get_subject_and_link() {
   my $stream = shift;
   my $subject = "No Subject";
-  while (my $h1_tag = $stream->get_tag("h1")) {
+  my $link = "No Link";
+  while (my $anchor_tag = $stream->get_tag("a")) {
+    my $attr_hash_ref = $anchor_tag->[1];
     $subject = $stream->get_trimmed_text();
-    return($subject);
+    return($subject, "http://www.sportsblog.com" . $attr_hash_ref->{href});
   }
-  return ($subject);
+  return ($subject, $link);
 }
 
 sub get_entry() {
@@ -174,10 +156,23 @@ sub get_entry() {
   my $keep_going = 1;
   while ($keep_going) {
     my $t = $stream->get_tag("p", "div");
-    if ($t->[0] eq "div" and $t->[1]{class} eq "article-tags") {
+    if ($t->[0] eq "div" and $t->[1]{class} eq "article-col") {
       $keep_going = 0;
+    } elsif ($t->[0] eq "div" and $t->[1]{id} eq "article-content") {
+      print "  article-content: " . $t->[1]{'data-article-content'} . "\n" if $opt_debug;
+      my $raw_json = $t->[1]{'data-article-content'};
+      my $json_decoded = decode_json $raw_json;
+      print "  json_decoded: " . $json_decoded . "\n" if $opt_debug;
+      print "  json_decoded->[0]: " . $json_decoded->[0] . "\n" if $opt_debug;
+      for (keys %{$json_decoded->[0]}) {
+        print("    $_ => $json_decoded->[0]{$_}\n") if $opt_debug;
+      }
+      my $children = $json_decoded->[0]{children};
+      print "    children->[0]{text}: " . $children->[0]{text} . "\n" if $opt_debug;
+      $entry .= $children->[0]{text};
     } else {
       $entry .= $stream->get_phrase();
+      $entry .= " ";
     }
   }
   return ($entry);
@@ -187,24 +182,18 @@ sub get_pubdate() {
   my $stream = shift;
   my $pub_date_raw = "No Entry";
   my $pub_date = "No Entry";
-  while (my $div_tag = $stream->get_tag("div")) {
-
-    if ($div_tag->[1]{class} && $div_tag->[1]{class} eq "articles-author-name") {
-      $stream->get_tag("p");
-      $pub_date_raw = $stream->get_phrase();
-      $pub_date = reformat_date($pub_date_raw);
-      return($pub_date);
-    }
-  }
-  return ($pub_date_raw);
+  $stream->get_tag("p"); # articles-author-name
+  $stream->get_tag("p"); # articles-author-blog-name
+  $stream->get_tag("p"); # articles-author-date
+  $pub_date_raw = $stream->get_phrase();
+  $pub_date = reformat_date($pub_date_raw);
+  return($pub_date);
 }
 
 sub reformat_date() {
-  # Read this raw date: By rickumali May. 13, 2017
+  # Read this raw date: Feb. 06, 2021
   my $pub_date_raw = shift;
-
-  # Remove the byline
-  $pub_date_raw = substr $pub_date_raw, length("By rickumali") + 1;
+  print "  pub_date_raw: " . $pub_date_raw if $opt_debug;
   my ($raw_mon, $raw_day, $raw_year) = split(' ', $pub_date_raw);
   chop($raw_mon); # Remove trailing period
   chop($raw_day); # Remove trailing comma
